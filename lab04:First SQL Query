@@ -1,0 +1,63 @@
+Last login: Fri Sep  5 15:21:52 on ttys000
+sabinaburkanova@MacBook-Air-Sabina ~ % psql -U sabina_rakhmanova -d postgres
+psql (14.19 (Homebrew))
+Type "help" for help.
+
+postgres=# DROP TABLE IF EXISTS students;
+DROP TABLE
+postgres=# CREATE TABLE students (
+postgres(# id SERIAL PRIMARY KEY,
+postgres(# name VARCHAR(100),
+postgres(# email VARCHAR(100),
+postgres(# faculty VARCHAR(100)
+postgres(# );
+CREATE TABLE
+postgres=# INSERT INTO students (name, email, faculty) VALUES
+postgres-# ('Sabina', 'rs12441@auca.kg', 'SFW'),
+    ('Karim', 'ik12209@auca.kg', 'BA'),
+    ('Leila', 'dl32131@auca.kg', 'LAS');
+INSERT 0 3
+postgres=# SELECT * FROM students;
+ id |  name  |      email      | faculty 
+----+--------+-----------------+---------
+  1 | Sabina | rs12441@auca.kg | SFW
+  2 | Karim  | ik12209@auca.kg | BA
+  3 | Leila  | dl32131@auca.kg | LAS
+(3 rows)
+
+postgres=# SELECT name, email FROM students;
+  name  |      email      
+--------+-----------------
+ Sabina | rs12441@auca.kg
+ Karim  | ik12209@auca.kg
+ Leila  | dl32131@auca.kg
+(3 rows)
+
+postgres=# SELECT name, email FROM students WHERE faculty = 'SFW';
+  name  |      email      
+--------+-----------------
+ Sabina | rs12441@auca.kg
+(1 row)
+
+postgres=# SELECT name, email FROM students ORDER BY name;
+  name  |      email      
+--------+-----------------
+ Karim  | ik12209@auca.kg
+ Leila  | dl32131@auca.kg
+ Sabina | rs12441@auca.kg
+(3 rows)
+
+postgres=# SELECT name , email FROM students limit 2;
+  name  |      email      
+--------+-----------------
+ Sabina | rs12441@auca.kg
+ Karim  | ik12209@auca.kg
+(2 rows)
+
+postgres=# SELECT name, email FROM students limit 1;
+  name  |      email      
+--------+-----------------
+ Sabina | rs12441@auca.kg
+(1 row)
+
+postgres=#
