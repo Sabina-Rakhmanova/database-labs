@@ -1,0 +1,14 @@
+sabinaburkanova@MacBook-Air-Sabina ~ % psql -U sabina_rakhmanova -d postgres
+psql (14.19 (Homebrew))
+Type "help" for help.
+
+postgres=# CREATE DATABASE database_name;
+CREATE DATABASE
+postgres=# CREATE DATABASE university;
+CREATE DATABASE
+postgres=# \c database_name
+You are now connected to database "database_name" as user "sabina_rakhmanova".
+database_name=# \c university
+You are now connected to database "university" as user "sabina_rakhmanova".
+university=# psql -d university -U username
+university-# 
