@@ -1,0 +1,53 @@
+DROP TABLE IF EXISTS university_students CASCADE;
+
+CREATE TABLE students_data (
+  student_id SERIAL PRIMARY KEY,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
+  faculty VARCHAR(100)
+);
+
+ALTER TABLE students_data
+ADD COLUMN date_of_birth DATE;
+SELECT * FROM students_data;
+
+ALTER TABLE students_data
+DROP COLUMN faculty;
+
+ALTER TABLE students_data
+ALTER COLUMN first_name TYPE TEXT;
+
+ALTER TABLE students_data
+RENAME COLUMN email TO email_address;
+
+ALTER TABLE students_data
+RENAME TO university_students;
+
+INSERT INTO university_students(student_id, first_name, last_name, email_address, date_of_birth)
+VALUES ('12345', 'Beka', 'Maksatov', 'lskkjdidj@example.com', '07.03.2003'),
+       ('09876', 'Barchyn', 'Maksatova', 'allalalf333@example.com', '12.01.2015');
+
+SELECT * FROM university_students
+
+
+
+Output:
+
+DROP TABLE
+CREATE TABLE
+ALTER TABLE
+ student_id | first_name | last_name | email | faculty | date_of_birth 
+------------+------------+-----------+-------+---------+---------------
+(0 rows)
+
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+INSERT 0 2
+ student_id | first_name | last_name |      email_address      | date_of_birth 
+------------+------------+-----------+-------------------------+---------------
+      12345 | Beka       | Maksatov  | lskkjdidj@example.com   | 2003-07-03
+       9876 | Barchyn    | Maksatova | allalalf333@example.com | 2015-12-01
+(2 rows)
