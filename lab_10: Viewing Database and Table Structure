@@ -1,0 +1,36 @@
+CREATE TABLE Students (
+    student_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    birth_date DATE
+);
+
+INSERT INTO Students (first_name, last_name, birth_date)
+VALUES ('Kamila', 'Asanbekova', '2001-03-10');
+
+INSERT INTO Students (first_name, last_name, birth_date) VALUES
+('Timur', 'Kadyrov', '2002-11-05'),
+('Alina', 'Orozova', '2000-06-18'),
+('Nursultan', 'Tilekov', '2003-04-22');
+
+UPDATE Students
+SET birth_date = '2001-03-12'
+WHERE first_name = 'Kamila' AND last_name = 'Asanbekova';
+
+DELETE FROM Students
+WHERE first_name = 'Nursultan' AND last_name = 'Tilekov';
+
+DELETE FROM Students
+WHERE birth_date < '2001-01-01';
+
+UPDATE Students
+SET last_name = 'Kubatov'
+WHERE last_name IN ('Bekov', 'Samatov');
+
+SELECT * FROM Students;
+
+ student_id | first_name | last_name  | birth_date 
+------------+------------+------------+------------
+          2 | Timur      | Kadyrov    | 2002-11-05
+          1 | Kamila     | Asanbekova | 2001-03-12
+(2 rows)
