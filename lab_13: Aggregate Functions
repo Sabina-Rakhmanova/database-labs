@@ -1,0 +1,94 @@
+
+DROP TABLE IF EXISTS employees;
+CREATE TABLE employees (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50),
+    department VARCHAR(50),
+    salary NUMERIC,
+    age INT
+);
+
+INSERT INTO employees (name, department, salary, age) VALUES
+('Alice', 'HR', 50000, 30),
+('Bob', 'HR', 60000, 35),
+('Carol', 'IT', 70000, 28),
+('Dan', 'IT', 80000, 40);
+
+SELECT COUNT(*) FROM employees;
+SELECT SUM(salary) FROM employees;
+SELECT AVG(age) FROM employees;
+SELECT MAX(salary), MIN(salary) FROM employees;
+
+SELECT department, COUNT(*) FROM employees GROUP BY department;
+SELECT department, AVG(salary) FROM employees GROUP BY department;
+
+SELECT department, COUNT(*) AS total
+FROM employees
+GROUP BY department
+HAVING COUNT(*) > 1;
+
+SELECT 
+  department,
+  COUNT(*) AS total,
+  COUNT(CASE WHEN salary > 60000 THEN 1 END) AS high_earners
+FROM employees
+GROUP BY department;
+
+SELECT 
+  name,
+  department,
+  salary,
+  AVG(salary) OVER (PARTITION BY department) AS dept_avg_salary
+FROM employees;
+
+count 
+-------
+     4
+(1 row)
+
+  sum   
+--------
+ 260000
+(1 row)
+
+         avg         
+---------------------
+ 33.2500000000000000
+(1 row)
+
+  max  |  min  
+-------+-------
+ 80000 | 50000
+(1 row)
+
+ department | count 
+------------+-------
+ IT         |     2
+ HR         |     2
+(2 rows)
+
+ department |        avg         
+------------+--------------------
+ IT         | 75000.000000000000
+ HR         | 55000.000000000000
+(2 rows)
+
+ department | total 
+------------+-------
+ IT         |     2
+ HR         |     2
+(2 rows)
+
+ department | total | high_earners 
+------------+-------+--------------
+ IT         |     2 |            2
+ HR         |     2 |            0
+(2 rows)
+
+ name  | department | salary |  dept_avg_salary   
+-------+------------+--------+--------------------
+ Alice | HR         |  50000 | 55000.000000000000
+ Bob   | HR         |  60000 | 55000.000000000000
+ Carol | IT         |  70000 | 75000.000000000000
+ Dan   | IT         |  80000 | 75000.000000000000
+(4 rows)
