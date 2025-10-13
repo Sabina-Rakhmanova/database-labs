@@ -1,0 +1,69 @@
+CREATE TABLE employees (
+    employee_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50),
+    name VARCHAR(50),
+    department VARCHAR(50),
+    salary NUMERIC(10, 2),
+    manager_id INT
+);
+
+INSERT INTO employees (first_name, name, department, salary, manager_id) VALUES
+('Alice', 'Alice', 'Sales', 70000, NULL),
+('Bob', 'Bob', 'Sales', 60000, 1),
+('Carol', 'Carol', 'HR', 65000, NULL),
+('Dave', 'Dave', 'HR', 62000, 3),
+('Eve', 'Eve', 'IT', 75000, NULL);
+
+CREATE TABLE orders (
+    order_id SERIAL PRIMARY KEY,
+    region VARCHAR(50),
+    amount NUMERIC(10,2)
+);
+
+INSERT INTO orders (region, amount) VALUES
+('North', 12000),
+('South', 9000),
+('East', 15000),
+('West', 7000);
+
+CREATE TABLE warehouse_1 (
+    product_id SERIAL PRIMARY KEY,
+    product_name VARCHAR(100),
+    quantity INT
+);
+
+CREATE TABLE warehouse_2 (
+    product_id SERIAL PRIMARY KEY,
+    product_name VARCHAR(100),
+    quantity INT
+);
+
+INSERT INTO warehouse_1 (product_name, quantity) VALUES
+('Widget', 10),
+('Gadget', 0),
+('Thingamajig', 5);
+
+INSERT INTO warehouse_2 (product_name, quantity) VALUES
+('Widget', 0),
+('Gadget', 0),
+('Doohickey', 15);
+
+CREATE TABLE sales (
+    product_name VARCHAR(100),
+    year INT,
+    amount NUMERIC(10,2)
+);
+
+INSERT INTO sales (product_name, year, amount) VALUES
+('Widget', 2022, 1000),
+('Widget', 2023, 1100),
+('Gadget', 2022, 500),
+('Gadget', 2023, 600);
+
+SELECT * FROM employees WHERE department = 'Sales';
+
+employee_id | first_name | name  | department |  salary  | manager_id 
+-------------+------------+-------+------------+----------+------------
+           1 | Alice      | Alice | Sales      | 70000.00 |           
+           2 | Bob        | Bob   | Sales      | 60000.00 |          1
+(2 rows)
