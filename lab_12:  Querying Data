@@ -1,0 +1,177 @@
+DROP TABLE IF EXISTS Students;
+CREATE TABLE Students (
+    student_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    birth_date DATE
+);
+
+INSERT INTO Students (first_name, last_name, birth_date) VALUES
+('Aibek', 'Sharshenov', '2002-05-12'),
+('Ainura', 'Toktomamatova', '2001-09-23'),
+('Bakyt', 'Mamatov', '2003-01-15'),
+('Gulzat', 'Sultanova', '2002-07-30'),
+('Meerim', 'Bekova', '2000-11-01'),
+('Tilek', 'Usubaliev', '2003-04-05');
+
+SELECT * FROM Students;
+
+SELECT first_name, birth_date FROM Students;
+
+SELECT first_name, birth_date, EXTRACT(YEAR FROM AGE(birth_date)) AS age
+FROM Students;
+
+SELECT * FROM Students
+WHERE birth_date > '2002-01-01';
+
+SELECT * FROM Students
+WHERE first_name != 'Ainura';
+
+SELECT * FROM Students
+WHERE first_name LIKE 'A%';
+
+SELECT * FROM Students
+WHERE last_name ILIKE '%ova';
+
+SELECT * FROM Students
+WHERE first_name ~ '^[AB]';
+
+SELECT * FROM Students
+WHERE student_id IN (1, 3, 5);
+
+DROP TABLE IF EXISTS Courses;
+CREATE TABLE Courses (
+    course_id SERIAL PRIMARY KEY,
+    student_id INT REFERENCES Students(student_id),
+    course_name VARCHAR(100)
+);
+
+INSERT INTO Courses (student_id, course_name) VALUES
+(1, 'Math'),
+(3, 'Physics'),
+(4, 'Biology');
+
+SELECT first_name, last_name
+FROM Students s
+WHERE EXISTS (
+    SELECT 1 FROM Courses c
+    WHERE c.student_id = s.student_id
+);
+
+SELECT first_name, birth_date,
+  CASE
+    WHEN birth_date < '2001-01-01' THEN 'Oldest'
+    WHEN birth_date BETWEEN '2001-01-01' AND '2003-01-01' THEN 'Middle'
+    ELSE 'Youngest'
+  END AS age_group
+FROM Students;
+
+WITH avg_birth_year AS (
+    SELECT AVG(EXTRACT(YEAR FROM birth_date)) AS avg_year
+    FROM Students
+)
+SELECT s.first_name, s.birth_date
+FROM Students s
+JOIN avg_birth_year a ON EXTRACT(YEAR FROM s.birth_date) > a.avg_year;
+
+student_id | first_name |   last_name   | birth_date 
+------------+------------+---------------+------------
+          1 | Aibek      | Sharshenov    | 2002-05-12
+          2 | Ainura     | Toktomamatova | 2001-09-23
+          3 | Bakyt      | Mamatov       | 2003-01-15
+          4 | Gulzat     | Sultanova     | 2002-07-30
+          5 | Meerim     | Bekova        | 2000-11-01
+          6 | Tilek      | Usubaliev     | 2003-04-05
+(6 rows)
+
+ first_name | birth_date 
+------------+------------
+ Aibek      | 2002-05-12
+ Ainura     | 2001-09-23
+ Bakyt      | 2003-01-15
+ Gulzat     | 2002-07-30
+ Meerim     | 2000-11-01
+ Tilek      | 2003-04-05
+(6 rows)
+
+ first_name | birth_date | age 
+------------+------------+-----
+ Aibek      | 2002-05-12 |  23
+ Ainura     | 2001-09-23 |  24
+ Bakyt      | 2003-01-15 |  22
+ Gulzat     | 2002-07-30 |  23
+ Meerim     | 2000-11-01 |  24
+ Tilek      | 2003-04-05 |  22
+(6 rows)
+
+ student_id | first_name | last_name  | birth_date 
+------------+------------+------------+------------
+          1 | Aibek      | Sharshenov | 2002-05-12
+          3 | Bakyt      | Mamatov    | 2003-01-15
+          4 | Gulzat     | Sultanova  | 2002-07-30
+          6 | Tilek      | Usubaliev  | 2003-04-05
+(4 rows)
+
+ student_id | first_name | last_name  | birth_date 
+------------+------------+------------+------------
+          1 | Aibek      | Sharshenov | 2002-05-12
+          3 | Bakyt      | Mamatov    | 2003-01-15
+          4 | Gulzat     | Sultanova  | 2002-07-30
+          5 | Meerim     | Bekova     | 2000-11-01
+          6 | Tilek      | Usubaliev  | 2003-04-05
+(5 rows)
+
+ student_id | first_name |   last_name   | birth_date 
+------------+------------+---------------+------------
+          1 | Aibek      | Sharshenov    | 2002-05-12
+          2 | Ainura     | Toktomamatova | 2001-09-23
+(2 rows)
+
+ student_id | first_name |   last_name   | birth_date 
+------------+------------+---------------+------------
+          2 | Ainura     | Toktomamatova | 2001-09-23
+          4 | Gulzat     | Sultanova     | 2002-07-30
+          5 | Meerim     | Bekova        | 2000-11-01
+(3 rows)
+
+ student_id | first_name |   last_name   | birth_date 
+------------+------------+---------------+------------
+          1 | Aibek      | Sharshenov    | 2002-05-12
+          2 | Ainura     | Toktomamatova | 2001-09-23
+          3 | Bakyt      | Mamatov       | 2003-01-15
+(3 rows)
+
+ student_id | first_name | last_name  | birth_date 
+------------+------------+------------+------------
+          1 | Aibek      | Sharshenov | 2002-05-12
+          3 | Bakyt      | Mamatov    | 2003-01-15
+          5 | Meerim     | Bekova     | 2000-11-01
+(3 rows)
+
+DROP TABLE
+CREATE TABLE
+INSERT 0 3
+ first_name | last_name  
+------------+------------
+ Aibek      | Sharshenov
+ Bakyt      | Mamatov
+ Gulzat     | Sultanova
+(3 rows)
+
+ first_name | birth_date | age_group 
+------------+------------+-----------
+ Aibek      | 2002-05-12 | Middle
+ Ainura     | 2001-09-23 | Middle
+ Bakyt      | 2003-01-15 | Youngest
+ Gulzat     | 2002-07-30 | Middle
+ Meerim     | 2000-11-01 | Oldest
+ Tilek      | 2003-04-05 | Youngest
+(6 rows)
+
+ first_name | birth_date 
+------------+------------
+ Aibek      | 2002-05-12
+ Bakyt      | 2003-01-15
+ Gulzat     | 2002-07-30
+ Tilek      | 2003-04-05
+(4 rows)
