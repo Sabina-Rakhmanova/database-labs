@@ -1,0 +1,148 @@
+DROP TABLE IF EXISTS customer_feedback, sales_data, orders, products, customers, employees, staging_customers, target_customers CASCADE;
+
+CREATE TABLE employees (
+    employee_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    department VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    salary DECIMAL(10,2)
+);
+
+CREATE TABLE customers (
+    customer_id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100) UNIQUE
+);
+
+CREATE TABLE products (
+    product_id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    price DECIMAL(10,2),
+    created_at DATE DEFAULT CURRENT_DATE
+);
+
+CREATE TABLE orders (
+    order_id SERIAL PRIMARY KEY,
+    customer_id INTEGER REFERENCES customers(customer_id),
+    order_date DATE DEFAULT CURRENT_DATE,
+    total DECIMAL(10,2)
+);
+
+CREATE TABLE sales_data (
+    sale_id SERIAL PRIMARY KEY,
+    product_name VARCHAR(100),
+    quantity INTEGER,
+    sale_date DATE,
+    revenue DECIMAL(10,2)
+);
+
+CREATE TABLE customer_feedback (
+    feedback_id SERIAL PRIMARY KEY,
+    customer_id INTEGER REFERENCES customers(customer_id),
+    feedback TEXT,
+    rating INTEGER CHECK (rating BETWEEN 1 AND 5)
+);
+
+CREATE TABLE staging_customers (
+    customer_id INTEGER PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100)
+);
+
+CREATE TABLE target_customers (
+    customer_id INTEGER PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100)
+);
+
+INSERT INTO employees (first_name, last_name, department, email, salary) VALUES
+('Alice', 'Brown', 'IT', 'alice@company.com', 95000),
+('Bob', 'Smith', 'HR', 'bob@company.com', 72000),
+('Charlie', 'Davis', 'Sales', 'charlie@company.com', 85000);
+
+INSERT INTO customers (name, email) VALUES
+('Aibek', 'aibek@email.com'),
+('Ainura', 'ainura@email.com'),
+('Bakyt', 'bakyt@email.com'),
+('Dana', 'dana@email.com');
+
+INSERT INTO products (name, price) VALUES
+('Laptop', 1200.00),
+('Smartphone', 900.00),
+('Headphones', 160.00),
+('Smartwatch', 250.00);
+
+INSERT INTO orders (customer_id, total) VALUES
+(1, 2100.00),
+(2, 900.00),
+(3, 410.00),
+(4, 250.00);
+
+INSERT INTO sales_data (product_name, quantity, sale_date, revenue) VALUES
+('Laptop', 4, '2024-03-01', 4800.00),
+('Smartphone', 6, '2024-03-05', 5400.00),
+('Headphones', 12, '2024-03-10', 1920.00),
+('Smartwatch', 8, '2024-03-15', 2000.00);
+
+INSERT INTO customer_feedback (customer_id, feedback, rating) VALUES
+(1, 'Fast delivery and excellent quality.', 5),
+(2, 'Good phone, slightly late shipping.', 4),
+(3, 'Very satisfied with service.', 5),
+(4, 'Watch is nice, battery could be better.', 3);
+
+INSERT INTO staging_customers (customer_id, name, email) VALUES
+(1, 'Aibek', 'aibek@email.com'),
+(2, 'Ainura', 'ainura@email.com'),
+(3, 'Bakyt', 'bakyt_new@email.com'),  
+(5, 'Elina', 'elina@email.com');     
+
+INSERT INTO target_customers (customer_id, name, email)
+SELECT customer_id, name, email FROM staging_customers
+ON CONFLICT (customer_id)
+DO UPDATE SET
+    name = EXCLUDED.name,
+    email = EXCLUDED.email;
+
+
+SELECT COUNT(*) AS total_employees FROM employees;
+
+SELECT c.name, f.rating, f.feedback
+FROM customer_feedback f
+JOIN customers c ON f.customer_id = c.customer_id
+WHERE f.rating >= 4;
+
+SELECT product_name, SUM(revenue) AS total_revenue
+FROM sales_data
+GROUP BY product_name
+ORDER BY total_revenue DESC;
+
+SELECT * FROM target_customers ORDER BY customer_id;
+
+total_employees 
+-----------------
+               3
+(1 row)
+
+  name  | rating |               feedback               
+--------+--------+--------------------------------------
+ Aibek  |      5 | Fast delivery and excellent quality.
+ Ainura |      4 | Good phone, slightly late shipping.
+ Bakyt  |      5 | Very satisfied with service.
+(3 rows)
+
+ product_name | total_revenue 
+--------------+---------------
+ Smartphone   |       5400.00
+ Laptop       |       4800.00
+ Smartwatch   |       2000.00
+ Headphones   |       1920.00
+(4 rows)
+
+ customer_id |  name  |        email        
+-------------+--------+---------------------
+           1 | Aibek  | aibek@email.com
+           2 | Ainura | ainura@email.com
+           3 | Bakyt  | bakyt_new@email.com
+           5 | Elina  | elina@email.com
+(4 rows)
