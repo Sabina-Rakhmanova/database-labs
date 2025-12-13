@@ -1,6 +1,6 @@
-# 🐾 Vet Clinic Management System (VCMS) — Database Project
+# Vet Clinic Management System (VCMS)
 
-## 📌 Project Overview
+## Project Overview
 This repository contains the final project for the **Database Management Systems** course.  
 The project implements a complete **Relational Database** for a **Vet Clinic Management System (VCMS)**.
 
@@ -14,59 +14,19 @@ The system is designed to support daily operations of a veterinary clinic, inclu
 - billing and payments  
 - veterinarian workloads  
 
-The database is built using **PostgreSQL 17** and demonstrates proficiency in:
+## Core Database Functionality
 
-✔️ SQL schema design  
-✔️ Referential integrity & constraints  
-✔️ Complex queries and analytics  
-✔️ Transactions & indexing  
-✔️ Realistic workflow modeling  
-
----
-
-## 🛠️ Core Database Functionality
-
-### 1️⃣ Animal Management
-- Stores animal details (species, breed, age, weight).  
-- Each animal is linked to an owner.
-
-### 2️⃣ Owner & Contact Management
-- Stores full owner information and contact details.
-
-### 3️⃣ Appointment Scheduling
-- Manages appointment dates, types, statuses.  
-- Assigns veterinarians to appointments.
-
-### 4️⃣ Veterinarian & Staff Management
-- Stores staff roles, qualifications, and work schedules.  
-- Tracks which vet handled each appointment.
-
-### 5️⃣ Medical Records & Treatments
-Includes:
-- diagnoses  
-- prescriptions  
-- vaccinations  
-- procedures  
-- lab test results  
-
-All connected to appointments.
-
-### 6️⃣ Billing & Payments
-- Tracks treatment costs and medicine charges.  
-- Generates invoices and stores payment details.  
-
-### 7️⃣ Integrity & Validation
-Implemented using:
-- PRIMARY KEY  
-- FOREIGN KEY  
-- CHECK constraints  
-- Cascading relationships  
+- Animal Management
+- Owner & Contact Management
+- Appointment Scheduling
+- Veterinarian & Staff Management
+- Medical Records & Treatments 
+- Billing & Payments
+- Integrity & Validation
 
 ---
 
-## 📁 Repository Structure & Execution Guide
-
-All SQL scripts must be run **in order**:
+## Repository Structure & Execution Guide
 
 | File | Title | SQL Focus | Demonstrates |
 |------|--------|-------------|--------------|
@@ -76,35 +36,5 @@ All SQL scripts must be run **in order**:
 | `04_queries_advanced.sql` | Advanced SQL | Aggregates, CTEs, Window functions | Revenue reports, vet workload, diagnosis frequency |
 | `05_transactions_and_indexes.sql` | Transactions & Indexes | ACID, performance | ROLLBACK examples, `CREATE INDEX`, EXPLAIN ANALYZE |
 
----
-
-## 🧰 Technology Stack
-- **DBMS:** PostgreSQL 17  
-- **Admin Tool:** pgAdmin 4  
-- **Version Control:** GitHub  
-
----
-
-## 📚 Key Business Rules
-- Every animal must belong to an owner.  
-- Each appointment must have a veterinarian.  
-- Payment status must be one of: `Pending`, `Paid`, `Overdue`.  
-- No overlapping appointments for the same vet (validated via SQL logic).  
-
----
-
-## 🚀 How to Use
-1. Clone the repository  
-2. Open pgAdmin  
-3. Run files `01` → `05` in order  
-4. Execute queries to test functionality  
-5. Use for development, UI integration, or further study  
-
----
-
-## 👩‍⚕️ Summary
-The VCMS is a fully designed relational database that models a realistic veterinary clinic.  
-
----
 
 
